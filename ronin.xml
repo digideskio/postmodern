@@ -1,0 +1,32 @@
+<?xml version='1.0'?>
+<?xml-stylesheet type="text/xsl" href="http://ronin.rubyforge.org/dist/overlay.xsl"?>
+<ronin-overlay version='0.2.1'>
+  <title>
+    Postmodern Ronin
+  </title>
+  <source>
+    git://github.com/postmodern/postmodern-ronin.git
+  </source>
+  <source-view>
+    http://github.com/postmodern/postmodern-ronin/
+  </source-view>
+  <website>
+    http://houseofpostmodern.wordpress.com/
+  </website>
+  <license>
+    GPL-2
+  </license>
+  <maintainers>
+    <maintainer>
+      <name>
+        Postmodern
+      </name>
+      <email>
+        postmodern.mod3@gmail.com
+      </email>
+    </maintainer>
+  </maintainers>
+  <description>
+    A Ronin Overlay for my code and hacking.
+  </description>
+</ronin-overlay>
