@@ -10,7 +10,7 @@ module Milw0rm
     # Creates a new Section object with the specified section _name_.
     #
     def initialize(name)
-      @name = name
+      @name = name.to_s
       @page_cache = Hash.new do |hash,key|
         hash[key] = Page.new(
           "http://milw0rm.com/#{@name}.php",
