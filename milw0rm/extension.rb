@@ -1,3 +1,5 @@
+require 'milw0rm/section'
+
 ronin_extension do
 
   def remote
