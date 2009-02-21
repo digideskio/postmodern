@@ -41,6 +41,7 @@ module Milw0rm
       return self
     end
 
+    alias [] page
     alias to_s name
 
     def inspect # :nodoc:
