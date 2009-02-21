@@ -1,4 +1,4 @@
-require 'milw0rm/section'
+require 'milw0rm'
 
 ronin_extension do
 
