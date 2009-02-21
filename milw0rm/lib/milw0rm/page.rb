@@ -1,7 +1,11 @@
-require 'milw0rm/exploits'
+require 'milw0rm/exploit'
+
+require 'ronin/web'
 
 module Milw0rm
   class Page < Array
+
+    include Ronin
 
     # Default number of exploits per page
     PER_PAGE = 30
