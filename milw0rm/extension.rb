@@ -16,8 +16,6 @@ ronin_extension do
     section(:dos)
   end
 
-  protected
-
   def section(name)
     var = "@#{name}"
 
