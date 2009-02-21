@@ -20,7 +20,7 @@ module Milw0rm
       super()
 
       @url = URI(url)
-      @url.query_params['start'] = ((index - 1) * PER_PAGE)
+      @url.query_params['start'] = (index * PER_PAGE) unless index == 0
 
       update!
     end
@@ -63,9 +63,11 @@ module Milw0rm
       clear
 
       Web.get(@url).search('tr.submit').each do |row|
-        title = row.at('td[0]').inner_text
-        link = row.at('td[1]/a')
-        author = row.at('td[7')
+        cells = row.children
+
+        title = cells[0]
+        link = row.at('a') # ugly hack
+        author = cells[7]
 
         self << Exploit.new(
           title.inner_text,
