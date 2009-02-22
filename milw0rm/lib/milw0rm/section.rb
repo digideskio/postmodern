@@ -37,7 +37,7 @@ module Milw0rm
     # Returns the most recently posted exploits.
     #
     def recent
-      first_page[0..6]
+      first_page[0...6]
     end
 
     #
