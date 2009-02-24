@@ -14,7 +14,7 @@ ronin_extension do
     section(:webapps)
   end
 
-  def dos
+  def poc
     section(:dos)
   end
 
