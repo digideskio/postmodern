@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<file-list>
+  <extensions>
+    <ext>tar.gz</ext>
+    <ext>tgz</ext>
+    <ext>gz</ext>
+    <ext>tar.bz2</ext>
+    <ext>tbz</ext>
+    <ext>tbz2</ext>
+    <ext>bz2</ext>
+    <ext>zip</ext>
+    <ext>rar</ext>
+    <ext>iso</ext>
+  </extensions>
+
+  <!--
+    Each file name is defined in lower case first, then
+    the dumpster extension will use various mutation
+    rules to generate similar file names.
+  -->
+  <names>
+    <name>vuln</name>
+    <name>vulns</name>
+    <name>exploit</name>
+    <name>exploits</name>
+    <name>rootkit</name>
+    <name>canvas</name>
+    <name>immunity_canvas</name>
+    <name>immunity</name>
+    <name>core</name>
+    <name>core_impact</name>
+    <name>impact</name>
+    <name>pwn</name>
+    <name>owned</name>
+    <name>secret</name>
+    <name>secrets</name>
+    <name>private</name>
+    <name>temp</name>
+    <name>tmp</name>
+  </names>
+</file-list>
