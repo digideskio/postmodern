@@ -5,10 +5,11 @@ ronin_extension do
   def check(*urls,&block)
     valid_urls = []
 
-    each_filename do |filename|
-      urls.each do |url|
-        new_url = URI(url.to_s)
-        new_url.path = File.join(new_url.path,filename)
+    urls.each do |url|
+      base_url = URI(url.to_s)
+
+      each_filename do |filename|
+        new_url = base_url.merge(filename)
 
         if Net.http_ok?(:url => new_url)
           block.call(new_url) if block
