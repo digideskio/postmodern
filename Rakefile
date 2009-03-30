@@ -1,5 +1,5 @@
 # -*- ruby -*-
 
-require 'ronin/platform/tasks/spec.rb'
+require 'ronin/platform/tasks/spec'
 
 # vim: syntax=Ruby
