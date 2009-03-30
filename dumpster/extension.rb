@@ -2,7 +2,7 @@ require 'ronin/network/http'
 
 ronin_extension do
 
-  def check(*urls,&block)
+  def dive(*urls,&block)
     valid_urls = []
 
     urls.each do |url|
