@@ -1,4 +1,6 @@
 require 'ronin/network/http'
+require 'uri'
+require 'yaml'
 
 ronin_extension do
 
