@@ -1,7 +1,5 @@
 require 'ronin/network/http'
 
-require 'nokogiri'
-
 ronin_extension do
 
   def check(*urls,&block)
@@ -23,11 +21,19 @@ ronin_extension do
   end
 
   def each_filename(&block)
-    path = File.join(File.dirname(__FILE__),'static','word_list.xml')
-    doc = Nokogiri::XML(File.open(path))
+    files = find_static_files('files.yaml')
+    exts = find_static_files('exts.yaml')
 
-    doc.search('/word-list/word').each do |word|
-      block.call(word.inner_text)
+    files.each do |file_path|
+      YAML.load_file(file_path).each do |file|
+
+        exts.each do |ext_path|
+          YAML.load_file(ext_path).each do |ext|
+            block.call("#{file}.#{ext}")
+          end
+        end
+
+      end
     end
 
     return nil
