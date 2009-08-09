@@ -13,6 +13,7 @@
             padding: 0;
             font-family: sans-serif;
             font-size: 1.0em;
+            background: url(http://ronin.rubyforge.org/images/diamond.png) repeat-y top left;
           }
 
           #content {
