@@ -8,12 +8,18 @@
         <title>Ronin Overlay :: <xsl:value-of select="title/." /></title>
         <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
         <style type="text/css">
+          html {
+            height: 100%;
+          }
+
           body {
+            height: 100%;
             margin: 0;
             padding: 0;
             font-family: sans-serif;
             font-size: 1.0em;
-            background: url(http://ronin.rubyforge.org/images/diamond.png) repeat-y top left;
+            background: url(http://ronin.rubyforge.org/images/diamond.png) repeat top left;
+            over-flow: auto;
           }
 
           #content {
