@@ -2,8 +2,8 @@
 <?xml-stylesheet type="text/xsl" href="static/ronin/platform/overlay.xsl"?>
 <ronin-overlay version='0.2.2'>
   <title>Postmodern Ronin</title>
-  <source>git://github.com/postmodern/postmodern-ronin.git</source>
-  <source-view>http://github.com/postmodern/postmodern-ronin/</source-view>
+  <source>git://github.com/postmodern/postmodern-overlay.git</source>
+  <source-view>http://github.com/postmodern/postmodern-overlay/</source-view>
   <website>http://houseofpostmodern.wordpress.com/</website>
   <license>GPL-2</license>
   <maintainers>
