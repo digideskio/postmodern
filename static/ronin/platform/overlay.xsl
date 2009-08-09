@@ -22,6 +22,10 @@
             over-flow: auto;
           }
 
+          img {
+            border: none;
+          }
+
           #content {
             margin: 1em 10em 1em 10em;
             padding: 1em 1em 1em 1em;
@@ -62,16 +66,29 @@
       <body>
         <div id="page">
           <div id="banner">
-            <img id="logo" src="http://ronin.rubyforge.org/images/logo.png" />
+            <a href="http://ronin.rubyforge.org/">
+              <img id="logo" src="http://ronin.rubyforge.org/images/logo.png" />
+            </a>
           </div>
 
           <div id="content">
             <h2><xsl:value-of select="title/." /></h2>
             <p><xsl:value-of select="description/." /></p>
 
+            <xsl:if test="description[@href]">
+            <p>
+              <a>
+                <xsl:attribute name="href"><xsl:value-of select="description/@href" /></xsl:attribute>
+                [ Continued ]
+              </a>
+            </p>
+            </xsl:if>
+
             <xsl:if test="dependencies"><xsl:call-template name="dependencies_section" /></xsl:if>
 
             <xsl:if test="source"><xsl:call-template name="install_section" /></xsl:if>
+
+            <xsl:if test="maintainers"><xsl:call-template name="maintainers_section" /></xsl:if>
 
             <xsl:if test="license"><xsl:call-template name="license_section" /></xsl:if>
           </div>
@@ -100,9 +117,40 @@
     <p>This Overlay is licensed under the <xsl:apply-templates select="license" />.</p>
   </xsl:template>
 
+  <xsl:template name="maintainers_section">
+    <h2>Maintainers</h2>
+
+    <ul>
+      <xsl:apply-templates select="maintainers/maintainer" />
+    </ul>
+  </xsl:template>
+
+  <xsl:template match="maintainers/maintainer">
+    <li>
+      <xsl:choose>
+        <xsl:when test="email">
+          <a>
+            <xsl:attribute name="href">mailto:<xsl:value-of select="email/." /></xsl:attribute>
+            <xsl:value-of select="name/." />
+          </a>
+        </xsl:when>
+
+        <xsl:otherwise>
+          <xsl:value-of select="name/." />
+        </xsl:otherwise>
+      </xsl:choose>
+    </li>
+  </xsl:template>
+
   <xsl:template match="license">
     <a>
+      <xsl:attribute name="target">blank</xsl:attribute>
+
       <xsl:choose>
+        <xsl:when test="@href">
+          <xsl:attribute name="href"><xsl:value-of select="@href" /></xsl:attribute>
+        </xsl:when>
+
         <xsl:when test=". = 'GPL-2'">
           <xsl:attribute name="href">http://www.gnu.org/licenses/gpl-2.0.html</xsl:attribute>
         </xsl:when>
