@@ -1,3 +1,5 @@
+require 'ronin/platform/extension'
+
 require 'milw0rm'
 
 ronin_extension do

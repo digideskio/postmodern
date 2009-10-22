@@ -1,3 +1,5 @@
+require 'ronin/platform/extension'
+
 require 'ronin/network/http'
 require 'uri'
 require 'yaml'
