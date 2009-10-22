@@ -24,8 +24,8 @@ ronin_extension do
   end
 
   def each_filename(&block)
-    files = find_static_files('files.yaml')
-    exts = find_static_files('exts.yaml')
+    files = find_static_files('dumpster/files.yaml')
+    exts = find_static_files('dumpster/exts.yaml')
 
     files.each do |file_path|
       YAML.load_file(file_path).each do |file|
