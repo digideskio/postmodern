@@ -1,0 +1,10 @@
+name: postmodern
+title: Postmoderns Ronin Overlay
+uri: git://github.com/postmodern/postmodern-overlay.git
+source: http://github.com/postmodern/postmodern-overlay
+website: http://postmodern.github.com/
+license: GPL-2
+maintainers:
+  Postmodern: postmodern.mod3@gmail.com
+description:
+  A Ronin Overlay for my code and hacking.
