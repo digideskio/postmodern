@@ -1,0 +1,12 @@
+#!/usr/bin/env ronin-exec
+
+require 'gawker'
+
+unless ARGV.length == 1
+  STDERR.puts "usage: gawker FILE"
+  exit -1
+end
+
+Gawker.import(ARGV[0]) do |cred|
+  print_info "Imported #{cred}"
+end
