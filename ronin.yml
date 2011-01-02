@@ -1,0 +1,10 @@
+name: postmodern
+title: Postmoderns Ronin Repository
+uri: git://github.com/postmodern/postmodern.git
+source: http://github.com/postmodern/postmodern
+website: http://postmodern.github.com/
+license: GPL-2
+maintainers:
+  Postmodern: postmodern.mod3@gmail.com
+description:
+  A Ronin Repository for my code and hacking.
