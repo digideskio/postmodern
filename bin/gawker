@@ -8,5 +8,9 @@ unless ARGV.length == 1
 end
 
 Gawker.import(ARGV[0]) do |cred|
-  print_info "Imported #{cred}"
+  if cred.new?
+    print_info "Imported #{cred}"
+  else
+    print_info "Already imported #{cred}"
+  end
 end
