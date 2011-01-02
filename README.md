@@ -9,3 +9,14 @@ with the following command:
 
     $ ronin repos --install http://github.com/postmodern/postmodern.git
 
+## Usage
+
+Jump in:
+
+    $ ronin
+    >> MyCode.some_method
+
+Run a script:
+
+    $ ronin exec myscript --args
+
