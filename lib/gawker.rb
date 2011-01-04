@@ -53,9 +53,6 @@ module Gawker
       user = UserName.first_or_create(:name => user)
       password = Password.first_or_create(:clear_text => password)
 
-      # also lookup the IP addresses of the email host name
-      email.host_name.lookup! if email.host_name.new?
-
       yield WebCredential.first_or_create(
         :user_name => user,
         :email_address => email,
