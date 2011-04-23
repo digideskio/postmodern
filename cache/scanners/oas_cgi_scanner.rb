@@ -27,6 +27,7 @@ Ronin::Scanners::WebVulnScanner.object do
       checks.each do |check|
         path = check[:path]
         method = check.fetch(:method,'GET')
+        vuln = check.fetch(:vuln,'')
 
         response = begin
                      case method
@@ -46,7 +47,8 @@ Ronin::Scanners::WebVulnScanner.object do
 
           yield Vulns::Web.new(
             :request_method => method.to_s.upcase,
-            :url => URL.parse("http://#{@host}:#{@port}#{path}")
+            :url => URL.parse("http://#{@host}:#{@port}#{path}"),
+            :description => vuln
           )
         when '401'
           print_info "HTTP 401: #{path} Vuln: #{check[:vuln]}"
