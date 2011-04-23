@@ -148,7 +148,7 @@
   :vuln: Default JSP examples on a 10.1 Oracle
 - :path: /FAQApp
 - :path: /fastcgi/
-  :vuln: Fastcgi Developer's Kit Index Page
+  :vuln: "Fastcgi Developer's Kit Index Page"
 - :path: /fcgi-bin/
 - :path: /fcgi-bin/echo
 - :path: /fcgi-bin/echo.exe

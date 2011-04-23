@@ -1,6 +1,6 @@
-require 'ronin/scanners/vuln_scanner'
+require 'ronin/scanners/web_vuln_scanner'
 
-Ronin::Scanners::VulnScanner.object do
+Ronin::Scanners::WebVulnScanner.object do
 
   parameter :host, :description => 'The host to check'
   parameter :port, :default => 80,
@@ -26,8 +26,8 @@ Ronin::Scanners::VulnScanner.object do
 
       checks.each do |check|
         path = check[:path]
+        method = check.fetch(:method,'GET')
 
-        methopd = check.fetch(:method,'GET')
         response = begin
                      case method
                      when 'POST'
@@ -41,16 +41,16 @@ Ronin::Scanners::VulnScanner.object do
                    end
 
         case response.code
-        when 200
+        when '200'
           print_info "Found: #{path} Vuln: #{check[:vuln]}"
 
           yield Vulns::Web.new(
             :request_method => method.to_s.upcase,
             :url => URL.parse("http://#{@host}:#{@port}#{path}")
           )
-        when 401
+        when '401'
           print_info "HTTP 401: #{path} Vuln: #{check[:vuln]}"
-        when 302, 301
+        when '302', '301'
           location = response.headers['Location']
 
           print_info "HTTP Redirect: #{path} -> #{location}"
