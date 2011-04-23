@@ -13,8 +13,8 @@ Ronin::Scanners::URLScanner.object do
       This scans for common ORACLE Database Access Desriptors (DAD)
     }
 
-    self.author(:name => 'CG', :organization => 'carnal0wnage')
-    self.license!(:mit)
+    author :name => 'CG', :organization => 'carnal0wnage'
+    license! :mit
   end
 
   def scan

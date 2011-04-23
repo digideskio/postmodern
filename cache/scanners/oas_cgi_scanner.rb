@@ -15,9 +15,9 @@ Ronin::Scanners::WebVulnScanner.object do
       output to see all error codes.
     }
 
-    self.author(:name => 'MC')
-    self.author(:name => 'CG', :organization => 'carnal0wnage')
-    self.license!(:mit)
+    author :name => 'MC'
+    author :name => 'CG', :organization => 'carnal0wnage'
+    license! :mit
   end
 
   def scan
