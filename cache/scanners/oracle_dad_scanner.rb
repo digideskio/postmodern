@@ -1,10 +1,9 @@
 require 'ronin/scanners/url_scanner'
+require 'ronin/network/mixins/http'
 
 Ronin::Scanners::URLScanner.object do
 
-  parameter :host, :description => 'The host to check'
-  parameter :port, :default => 80,
-                   :description => 'The port to check'
+  extend Network::Mixins::HTTP
 
   cache do
     self.name = 'Oracle Application Server Detection'
@@ -18,7 +17,7 @@ Ronin::Scanners::URLScanner.object do
   end
 
   def scan
-    Net.http_session(:host => @host, :port => @port) do |http|
+    http_session do |http|
       paths = YAML.load_file(find_data_file('oracle/dad_fingerprints.yml'))
 
       paths.each do |path|
