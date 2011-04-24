@@ -1,10 +1,9 @@
 require 'ronin/scanners/web_vuln_scanner'
+require 'ronin/network/mixins/http'
 
 Ronin::Scanners::WebVulnScanner.object do
 
-  parameter :host, :description => 'The host to check'
-  parameter :port, :default => 80,
-                   :description => 'The port to check'
+  extend Network::Mixins::HTTP
 
   cache do
     self.name = 'Oracle Application Server Check'
@@ -21,7 +20,7 @@ Ronin::Scanners::WebVulnScanner.object do
   end
 
   def scan
-    Net.http_session(:host => @host, :port => @port) do |http|
+    http_session do |http|
       checks = YAML.load_file(find_data_file('oracle/oas_fingerprints.yml'))
 
       checks.each do |check|
