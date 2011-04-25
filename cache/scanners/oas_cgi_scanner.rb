@@ -1,3 +1,5 @@
+#!/usr/bin/env ronin-scan -f
+
 require 'ronin/scanners/web_vuln_scanner'
 require 'ronin/network/mixins/http'
 

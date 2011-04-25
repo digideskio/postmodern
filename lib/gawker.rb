@@ -50,15 +50,16 @@ module Gawker
                 next
               end
 
-      user = UserName.first_or_create(:name => user)
-      password = Password.first_or_create(:clear_text => password)
-
-      yield WebCredential.first_or_create(
+      user = UserName.first_or_new(:name => user)
+      password = Password.first_or_new(:clear_text => password)
+      credential = WebCredential.first_or_new(
         :user_name => user,
         :email_address => email,
         :password => password,
         :url => url
       )
+
+      yield credential if credential.save
     end
   end
 end
