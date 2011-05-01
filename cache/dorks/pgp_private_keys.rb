@@ -1,3 +1,5 @@
+#!/usr/bin/env ronin-dork -f
+
 require 'ronin/dorks/google_dork'
 
 Ronin::Dorks::GoogleDork.object do
