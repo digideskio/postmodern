@@ -1,4 +1,10 @@
-gem 'rspec', '~> 2.3.0'
-
-require 'rspec/core/rake_task'
-RSpec::Core::RakeTask.new
+begin
+  gem 'yard', '~> 0.7.0'
+  require 'yard'
+  
+  YARD::Rake::YardocTask.new
+rescue LoadError
+  task :yard do
+    abort "Please run `gem install yard` to install YARD."
+  end
+end
