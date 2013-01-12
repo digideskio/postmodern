@@ -8,8 +8,6 @@
 #
 # ## Caveats
 #
-# * Executes the code four times.
-#
 # ## Synopsis
 #
 #   $ rails_rce.rb URL RUBY
@@ -82,7 +80,13 @@ end
 url   = ARGV[0]
 code  = ARGV[1]
 
-escaped_code = "foo; #{code}\n__END__\n"
+escaped_code = %{foo
+unless @executed
+  #{code}
+  @executed = true
+end
+__END__
+}
 
 yaml = %{
 --- !ruby/hash:ActionDispatch::Routing::RouteSet::NamedRouteCollection
