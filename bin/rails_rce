@@ -20,7 +20,7 @@
 #
 # ## Example
 #
-#   $ rails_rce.rb http://localhost:3000/secrets/search secret "puts 'lol'"
+#   $ rails_rce.rb http://localhost:3000/secrets/search "puts 'lol'"
 #
 # ### config/routes.rb
 #
